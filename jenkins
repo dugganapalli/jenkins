@@ -1,0 +1,65 @@
+1)Developer builds the code pushes to scm
+ protocal:http/ssh
+ webhooks: git triggers the job , webhooks only transfer data when there is new data to send,
+ pollscm:Poll SCM" polls the SCM periodically for checking if any changes/ new commits were made
+
+2)scm sends events (webhooks) to jenkins server
+
+3)jenkins job will start and takes from SCM and copies to workspace
+  
+  Build
+  ------
+    workspace: *.java----compile-----*.class----*.workspace
+    maven: mvn clean package
+
+    Junit Test cases---test their code themself
+    code qulity testing:jacoc,cobertura,checkstyle
+
+    Reports ----html/json----sonarqube
+    
+ After all goes in the build phase we will get a package/target/binary/artifact
+ example: *.workspace
+
+step4: Save the package/delivery into artifactory 
+ex:s3, nexus,jfrog
+
+step5: take the package from artifactory and copies in to workspace
+step6: jenkins has package in workspace and copie to target servers
+step7:test the functionality with test cases
+
+warpath=/var/lib/jenkins/workspace/build-war-maven/target/
+warfile=hello-world-war-1.0.0.war
+bucketname=rctcloud
+aws s3 cp $warpath/$warfile s3://$bucketname/
+
+
+
+/opt/maven38/bin/mvn clean package 
+sleep 5
+
+warpath=/var/lib/jenkins/workspace/build-war-maven/target
+warfile=hello-world-war-1.0.0.war
+newwarfile=sparkhello-$BUILD_NUMBER
+bucketname=rctcloud
+mv $warpath/$warfile $warpath/$newwarfile
+aws s3 cp $warpath/$warfile s3://$bucketname/
+
+
+deploy the war from s3
+-----------------------
+
+Download the package from s3 to the workspace
+
+aws s3 cp s3://rctcloud-artifactory/sparkhello-10.war .
+
+copy to the tomcat /webapps
+
+scp packagename.war  username@serverIP:/opt/tomcat9/webapps/
+scp sparkhello-10.war root@192.168.4.148:/opt/tomcat9/webapps/sparkhello.war
+
+
+
+pass parameter from one job to other job
+pre-req: plugin
+
+BUILD_NUMBER----CI
