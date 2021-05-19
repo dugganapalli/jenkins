@@ -104,10 +104,38 @@ Settings →> Integrations & Services →> Add service →> Search “Jenkins (G
 
 How will you secure Jenkins
 ====================
-    
+
 Make sure that global security is on.
 Check if Jenkins is integrated with my company's user directory with an appropriate plugin.
 Ensure that the matrix/Project matrix is enabled to fine-tune access.
 Automate the process of setting rights/privileges in Jenkins with custom version controlled script.
 Limit physical access to Jenkins data/folders.
 Periodically run security audits on the same
+
+
+
+jenkins master slave
+==============
+ Jenkins dashboard, 
+ Manage jenkins 
+ Manage Nodes 			
+ New Node 
+
+You have to give your slave name like “Jenkins_Slave”
+
+
+COMMAND:   ssh hostname java -jar ~/bin/agent.jar.
+
+Like 
+ssh ec2-user@172.31.95.252 java –jar /home/ec2-user/agent.jar
+
+
+ You have to copy link address from agent.jar can be downloaded from here.
+
+To download agent.jar file in Jenkins slave. 
+
+CMD:	
+
+wget http://18.212.19.254:8080/jnlpJars/agent.jar
+
+  Finally Mange Jenkins  Configuration System  Usage
